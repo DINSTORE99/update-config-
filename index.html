@@ -123,12 +123,13 @@
 
   <h1>UPDATE CONFIG HC</h1>
 
-<!-- Countdown Box -->
-<div class="countdown-box">
-  <h2>Update Terakhir: 03 Oktober 2025</h2>
-  <h2>Expired: 10 Oktober 2025</h2>
-  <div id="timer" class="timer">00 : 00 : 00 : 00</div>
-</div>
+
+  <!-- Countdown Box -->
+  <div class="countdown-box">
+    <h2 id="last-update">Update Terakhir: </h2>
+    <h2 id="expired-date">Expired: </h2>
+    <div id="timer" class="timer">00 : 00 : 00 : 00</div>
+  </div>
 
 <!-- Kata-kata Hari Ini -->
 <div class="quote-box">
@@ -402,10 +403,26 @@ setInterval(() => {
   </div>
 
   <script>
-    // countdown otomatis
-    const expireDate = new Date("Oct 10, 2025 23:59:59").getTime();
-    const timer = document.getElementById("timer");
+    // 🔹 Lama expired setelah update (ubah sesuai kebutuhan)
+    const expiredAfterDays = 2;
 
+    // 🔹 Format tanggal Indonesia
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+
+    // 🔹 Update terakhir = hari ini
+    const today = new Date();
+    document.getElementById("last-update").textContent =
+      "Update Terakhir: " + today.toLocaleDateString("id-ID", options);
+
+    // 🔹 Expired = hari ini + X hari
+    const expireDateObj = new Date(today);
+    expireDateObj.setDate(today.getDate() + expiredAfterDays);
+    document.getElementById("expired-date").textContent =
+      "Expired: " + expireDateObj.toLocaleDateString("id-ID", options);
+
+    // 🔹 Countdown
+    const expireDate = expireDateObj.getTime();
+    const timer = document.getElementById("timer");
     setInterval(() => {
       const now = new Date().getTime();
       const distance = expireDate - now;
